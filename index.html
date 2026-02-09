@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Future-Self Advisor (MVP)</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">Future-Self Advisor</p>
+        <h1>未来の自分から、今のあなたへ。</h1>
+        <p class="lead">
+          過去に残したメモからヒントを拾い、未来の自分として次の一手をまとめます。
+        </p>
+      </header>
+
+      <section class="card input-card">
+        <label for="question" class="label">相談したいこと</label>
+        <textarea
+          id="question"
+          class="textarea"
+          placeholder="例: 仕事の方向性に迷っています。転職すべきか、社内で挑戦すべきか…"
+          rows="4"
+        ></textarea>
+        <div class="actions">
+          <button id="askButton" class="button">相談する</button>
+          <span id="status" class="status" aria-live="polite"></span>
+        </div>
+        <p id="error" class="error" role="alert"></p>
+      </section>
+
+      <section class="results" id="results" hidden>
+        <div class="card">
+          <h2>未来の自分からの回答</h2>
+          <div id="answer"></div>
+        </div>
+
+        <div class="card">
+          <h2>参照メモ一覧</h2>
+          <div id="references" class="references"></div>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
