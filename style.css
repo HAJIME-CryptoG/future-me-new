@@ -56,6 +56,18 @@ h1 {
   border: 1px solid var(--border);
 }
 
+.section-heading {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 20px;
+}
+
+.helper {
+  color: var(--muted);
+  margin: 0 0 16px;
+  font-size: 14px;
+}
+
 .input-card {
   margin-bottom: 32px;
 }
@@ -74,6 +86,21 @@ h1 {
   font-size: 16px;
   resize: vertical;
   font-family: inherit;
+}
+
+.text-input {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.field-grid {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .actions {
@@ -98,6 +125,18 @@ h1 {
 .button:hover {
   transform: translateY(-1px);
   box-shadow: 0 8px 16px rgba(63, 106, 216, 0.25);
+}
+
+.button-outline {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  box-shadow: none;
+}
+
+.button-outline:hover {
+  background: rgba(63, 106, 216, 0.08);
+  box-shadow: none;
 }
 
 .status {
@@ -160,5 +199,15 @@ ul {
   .actions {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .field-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 721px) {
+  .field-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

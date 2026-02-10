@@ -5,10 +5,19 @@ const questionEl = document.getElementById("question");
 const resultsEl = document.getElementById("results");
 const answerEl = document.getElementById("answer");
 const referencesEl = document.getElementById("references");
+const memoTitleEl = document.getElementById("memoTitle");
+const memoDateEl = document.getElementById("memoDate");
+const memoTagsEl = document.getElementById("memoTags");
+const memoBodyEl = document.getElementById("memoBody");
+const saveMemoButton = document.getElementById("saveMemoButton");
+const memoStatusEl = document.getElementById("memoStatus");
+const memoErrorEl = document.getElementById("memoError");
 
 const state = {
   notes: [],
 };
+
+const LOCAL_STORAGE_KEY = "future-self-notes";
 
 const BASE_PATH = (() => {
   const path = location.pathname;
@@ -67,6 +76,23 @@ const parseFrontMatter = (content) => {
   return { meta, body };
 };
 
+const loadLocalNotes = () => {
+  const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed;
+  } catch (error) {
+    console.error("Failed to parse local notes", error);
+    return [];
+  }
+};
+
+const saveLocalNotes = (notes) => {
+  localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(notes));
+};
+
 const fetchNotes = async () => {
   statusEl.textContent = "メモを読み込み中...";
   const indexUrl = `${BASE_PATH}data/notes/index.json`;
@@ -97,7 +123,8 @@ const fetchNotes = async () => {
       };
     })
   );
-  state.notes = notes;
+  const localNotes = loadLocalNotes();
+  state.notes = [...localNotes, ...notes];
   statusEl.textContent = "";
 };
 
@@ -214,7 +241,50 @@ const handleAsk = () => {
   resultsEl.hidden = false;
 };
 
+const showMemoError = (message) => {
+  memoErrorEl.textContent = message;
+  memoStatusEl.textContent = "";
+};
+
+const clearMemoError = () => {
+  memoErrorEl.textContent = "";
+};
+
+const handleSaveMemo = () => {
+  clearMemoError();
+  const title = memoTitleEl.value.trim() || "判断メモ";
+  const date = memoDateEl.value || new Date().toISOString().slice(0, 10);
+  const tags = memoTagsEl.value
+    .split(",")
+    .map((tag) => tag.trim())
+    .filter(Boolean);
+  const body = memoBodyEl.value.trim();
+  if (!body) {
+    showMemoError("本文を入力してください。");
+    return;
+  }
+
+  const localNotes = loadLocalNotes();
+  const newNote = {
+    file: `local-${Date.now()}.md`,
+    title,
+    date,
+    tags,
+    body,
+    raw: body,
+  };
+  const updatedNotes = [newNote, ...localNotes];
+  saveLocalNotes(updatedNotes);
+  state.notes = [newNote, ...state.notes];
+  memoStatusEl.textContent = "メモを保存しました。";
+  memoTitleEl.value = "";
+  memoDateEl.value = "";
+  memoTagsEl.value = "";
+  memoBodyEl.value = "";
+};
+
 askButton.addEventListener("click", handleAsk);
+saveMemoButton.addEventListener("click", handleSaveMemo);
 
 fetchNotes().catch((error) => {
   showError(error.message);

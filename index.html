@@ -31,6 +31,39 @@
         <p id="error" class="error" role="alert"></p>
       </section>
 
+      <section class="card input-card">
+        <h2 class="section-heading">判断基準のメモ登録</h2>
+        <p class="helper">
+          ここで追加したメモはブラウザ内に保存され、相談時の検索対象に自動で含まれます。
+        </p>
+        <div class="field-grid">
+          <div>
+            <label for="memoTitle" class="label">タイトル</label>
+            <input id="memoTitle" class="text-input" placeholder="例: 意思決定ログ 2026-02-10" />
+          </div>
+          <div>
+            <label for="memoDate" class="label">日付</label>
+            <input id="memoDate" type="date" class="text-input" />
+          </div>
+          <div>
+            <label for="memoTags" class="label">タグ（カンマ区切り）</label>
+            <input id="memoTags" class="text-input" placeholder="例: 判断,仕事,健康" />
+          </div>
+        </div>
+        <label for="memoBody" class="label">本文</label>
+        <textarea
+          id="memoBody"
+          class="textarea"
+          placeholder="判断の軸や学びを書き留めてください。"
+          rows="5"
+        ></textarea>
+        <div class="actions">
+          <button id="saveMemoButton" class="button button-outline">メモを保存する</button>
+          <span id="memoStatus" class="status" aria-live="polite"></span>
+        </div>
+        <p id="memoError" class="error" role="alert"></p>
+      </section>
+
       <section class="results" id="results" hidden>
         <div class="card">
           <h2>未来の自分からの回答</h2>
